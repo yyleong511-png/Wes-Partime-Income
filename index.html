@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wes Part Time Income</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Wes Part Time Income</h1>
+    <p class="sub">Wardrobe Assistant · 时薪 RM10 · 休息时间不计薪</p>
+  </header>
+
+  <main>
+    <!-- 打卡表单 -->
+    <section class="card">
+      <h2 id="formTitle">新增记录</h2>
+      <form id="entryForm">
+        <input type="hidden" id="editId" />
+
+        <label>日期
+          <input type="date" id="date" required />
+        </label>
+
+        <div class="row">
+          <label>上班 Clock In
+            <div class="time-wrap">
+              <input type="time" id="clockIn" required />
+              <button type="button" class="now" data-target="clockIn">现在</button>
+            </div>
+          </label>
+          <label>下班 Clock Out
+            <div class="time-wrap">
+              <input type="time" id="clockOut" required />
+              <button type="button" class="now" data-target="clockOut">现在</button>
+            </div>
+          </label>
+        </div>
+
+        <div class="row">
+          <label>休息开始 Break In
+            <div class="time-wrap">
+              <input type="time" id="breakIn" />
+              <button type="button" class="now" data-target="breakIn">现在</button>
+            </div>
+          </label>
+          <label>休息结束 Break Out
+            <div class="time-wrap">
+              <input type="time" id="breakOut" />
+              <button type="button" class="now" data-target="breakOut">现在</button>
+            </div>
+          </label>
+        </div>
+
+        <label>备注（可选）
+          <input type="text" id="note" placeholder="例如：拍摄场地 / 客户名" />
+        </label>
+
+        <div class="preview" id="preview">填写时间后会自动计算</div>
+
+        <div class="actions">
+          <button type="submit" class="primary" id="saveBtn">保存记录</button>
+          <button type="button" id="cancelEdit" class="ghost hidden">取消编辑</button>
+        </div>
+        <p class="error" id="error"></p>
+      </form>
+    </section>
+
+    <!-- 月份汇总 -->
+    <section class="card">
+      <div class="month-head">
+        <h2>每月汇总</h2>
+        <input type="month" id="monthPick" />
+      </div>
+      <div class="stats">
+        <div><span id="statDays">0</span><small>上班天数</small></div>
+        <div><span id="statHours">0</span><small>总工时</small></div>
+        <div class="money"><span id="statPay">RM 0.00</span><small>本月工资</small></div>
+      </div>
+      <div id="list"></div>
+      <div class="actions small">
+        <button type="button" id="exportCsv" class="ghost">导出本月 CSV</button>
+      </div>
+    </section>
+
+    <!-- 备份 -->
+    <section class="card">
+      <h2>备份 / 还原</h2>
+      <p class="hint">资料只存在这台设备的浏览器里。换手机、清除浏览器资料前，记得先备份。</p>
+      <div class="actions small">
+        <button type="button" id="backupBtn" class="ghost">下载备份 (JSON)</button>
+        <label class="ghost file-btn">还原备份
+          <input type="file" id="restoreInput" accept="application/json" hidden />
+        </label>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

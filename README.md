@@ -1,1 +1,13 @@
-# Wes-Partime-Income
+# Wes Part Time Income
+
+记录 part time wardrobe assistant 每月工时和工资的私人小网站。
+
+- 时薪固定 RM10
+- 工资 = (下班 − 上班 − 休息) × RM10
+- 资料保存在浏览器（localStorage），记得定期「下载备份」
+
+## 上传到 GitHub Pages
+1. 在 GitHub 新建一个 repository
+2. 把 `index.html`、`style.css`、`app.js` 上传到 repository 根目录
+3. Settings → Pages → Source 选 `main` branch、`/ (root)` → Save
+4. 等一两分钟，网址会显示在 Pages 页面
