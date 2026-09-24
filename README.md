@@ -9,6 +9,6 @@
 
 ## 上传到 GitHub Pages
 1. 在 GitHub 新建一个 repository
-2. 把 `index.html`、`style.css`、`app.js` 上传到 repository 根目录
+2. 把 zip 里全部文件（html、css、js、png 图标）上传到 repository 根目录
 3. Settings → Pages → Source 选 `main` branch、`/ (root)` → Save
 4. 等一两分钟，网址会显示在 Pages 页面

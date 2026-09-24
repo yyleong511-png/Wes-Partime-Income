@@ -144,3 +144,6 @@ button.primary { background: var(--accent); color: var(--card); border-color: va
 }
 .grand small { color: var(--muted); font-size: .8rem; }
 .grand span { font-size: 1.8rem; font-weight: 800; color: var(--money); font-variant-numeric: tabular-nums; }
+
+/* logo */
+.logo { width: 72px; height: 72px; display: block; margin: 0 auto 10px; border-radius: 50%; }
