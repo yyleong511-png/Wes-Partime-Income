@@ -108,3 +108,39 @@ button.primary { background: var(--accent); color: var(--card); border-color: va
 .entry .btns button { padding: 4px 8px; font-size: .75rem; }
 .entry .btns .del { color: var(--danger); }
 .empty { color: var(--muted); text-align: center; padding: 16px 0; font-size: .9rem; }
+
+/* 页面切换 */
+.tabs {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; gap: 6px; justify-content: center;
+  max-width: 640px; margin: 8px auto 0; padding: 8px 16px;
+  background: var(--bg);
+}
+.tab { flex: 1; font-weight: 600; }
+.tab.active { background: var(--accent); color: var(--card); border-color: var(--accent); }
+
+/* 总记录账本 */
+.ledger-wrap { overflow-x: auto; }
+.ledger { width: 100%; border-collapse: collapse; font-size: .85rem; white-space: nowrap; }
+.ledger th {
+  text-align: left; color: var(--muted); font-weight: 500; font-size: .75rem;
+  padding: 8px 6px; border-bottom: 2px solid var(--line);
+}
+.ledger td { padding: 10px 4px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.ledger .num { text-align: right; }
+.ledger .idx { color: var(--muted); }
+.ledger .ops { text-align: right; }
+.ledger .ops button { padding: 4px 6px; font-size: .75rem; display: block; width: 100%; }
+.ledger .ops button + button { margin-top: 4px; }
+.ledger .sub-line { color: var(--muted); font-size: .72rem; margin-top: 2px; }
+.ledger td { vertical-align: top; }
+.ledger .ops .del { color: var(--danger); }
+.ledger tfoot td { border-bottom: none; border-top: 2px solid var(--ink); font-weight: 700; padding-top: 12px; }
+.ledger .foot-label { color: var(--muted); font-weight: 500; }
+.ledger .total { color: var(--money); }
+.grand {
+  display: flex; flex-direction: column; align-items: flex-end;
+  margin-top: 16px; padding-top: 12px;
+}
+.grand small { color: var(--muted); font-size: .8rem; }
+.grand span { font-size: 1.8rem; font-weight: 800; color: var(--money); font-variant-numeric: tabular-nums; }

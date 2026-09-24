@@ -12,7 +12,13 @@
     <p class="sub">Wardrobe Assistant · 时薪 RM10 · 休息时间不计薪</p>
   </header>
 
+  <nav class="tabs">
+    <button type="button" class="tab active" data-tab="pageClock">打卡</button>
+    <button type="button" class="tab" data-tab="pageLedger">总记录</button>
+  </nav>
+
   <main>
+  <div id="pageClock" class="page">
     <!-- 打卡表单 -->
     <section class="card">
       <h2 id="formTitle">新增记录</h2>
@@ -53,10 +59,6 @@
           </label>
         </div>
 
-        <label>备注（可选）
-          <input type="text" id="note" placeholder="例如：拍摄场地 / 客户名" />
-        </label>
-
         <div class="preview" id="preview">填写时间后会自动计算</div>
 
         <div class="actions">
@@ -83,6 +85,39 @@
         <button type="button" id="exportCsv" class="ghost">导出本月 CSV</button>
       </div>
     </section>
+  </div>
+
+  <!-- 总记录（账本） -->
+  <div id="pageLedger" class="page hidden">
+    <section class="card">
+      <h2>总记录</h2>
+      <div class="ledger-wrap">
+        <table class="ledger">
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>时间</th>
+              <th class="num">工时</th>
+              <th class="num">金额</th>
+              <th class="ops">操作</th>
+            </tr>
+          </thead>
+          <tbody id="ledgerBody"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2" class="foot-label">共 <span id="ledgerCount">0</span> 条记录</td>
+              <td class="num" id="ledgerHours">0</td>
+              <td class="num total" id="ledgerTotal">RM 0.00</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="grand">
+        <small>总数目</small>
+        <span id="grandTotal">RM 0.00</span>
+      </div>
+    </section>
 
     <!-- 备份 -->
     <section class="card">
@@ -95,6 +130,7 @@
         </label>
       </div>
     </section>
+  </div>
   </main>
 
   <script src="app.js"></script>

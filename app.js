@@ -61,7 +61,6 @@ function formData() {
     clockOut: $("clockOut").value,
     breakIn: $("breakIn").value,
     breakOut: $("breakOut").value,
-    note: $("note").value.trim(),
   };
 }
 
@@ -147,7 +146,7 @@ function render() {
       <div class="entry">
         <div>
           <div class="date">${e.date.slice(5)}（${wk}）</div>
-          <div class="meta">${e.clockIn}–${e.clockOut}${brk}<br>计薪 ${fmtDur(r.work)}${e.note ? " · " + escapeHtml(e.note) : ""}</div>
+          <div class="meta">${e.clockIn}–${e.clockOut}${brk}<br>计薪 ${fmtDur(r.work)}</div>
         </div>
         <div class="right">
           <div class="pay">${fmtRM(r.pay)}</div>
@@ -163,16 +162,49 @@ function render() {
   $("statDays").textContent = days.size;
   $("statHours").textContent = fmtDur(mins);
   $("statPay").textContent = fmtRM(Math.round(pay * 100) / 100);
+  renderLedger();
 }
 
-function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// 总记录（账本）：所有记录，最新在上
+function renderLedger() {
+  const all = [...entries].sort((a, b) => (b.date + b.clockIn).localeCompare(a.date + a.clockIn));
+  let mins = 0, pay = 0;
+  const rows = all.map((e, i) => {
+    const r = calc(e);
+    mins += r.work; pay += r.pay;
+    const brk = e.breakIn ? `<div class="sub-line">休息 ${e.breakIn}–${e.breakOut}</div>` : "";
+    return `
+      <tr>
+        <td>${e.date.slice(5)}<div class="sub-line">${e.date.slice(0, 4)}</div></td>
+        <td>${e.clockIn}–${e.clockOut}${brk}</td>
+        <td class="num">${(r.work / 60).toFixed(2)}h</td>
+        <td class="num">${r.pay.toFixed(2)}</td>
+        <td class="ops">
+          <button onclick="editEntry('${e.id}')">修改</button>
+          <button class="del" onclick="delEntry('${e.id}')">删除</button>
+        </td>
+      </tr>`;
+  }).join("");
+  $("ledgerBody").innerHTML = rows || `<tr><td colspan="5" class="empty">还没有任何记录</td></tr>`;
+  const total = fmtRM(Math.round(pay * 100) / 100);
+  $("ledgerCount").textContent = all.length;
+  $("ledgerHours").textContent = (mins / 60).toFixed(2) + "h";
+  $("ledgerTotal").textContent = total;
+  $("grandTotal").textContent = total;
 }
+
+// 页面切换
+function showTab(id) {
+  document.querySelectorAll(".page").forEach((p) => p.classList.toggle("hidden", p.id !== id));
+  document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === id));
+}
+document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => showTab(t.dataset.tab)));
 
 window.editEntry = (id) => {
   const e = entries.find((x) => x.id === id);
   if (!e) return;
-  ["date", "clockIn", "clockOut", "breakIn", "breakOut", "note"].forEach((k) => ($(k).value = e[k] || ""));
+  showTab("pageClock");
+  ["date", "clockIn", "clockOut", "breakIn", "breakOut"].forEach((k) => ($(k).value = e[k] || ""));
   $("editId").value = id;
   $("formTitle").textContent = "编辑记录";
   $("saveBtn").textContent = "更新记录";
@@ -194,14 +226,14 @@ $("monthPick").addEventListener("input", render);
 $("exportCsv").addEventListener("click", () => {
   const list = monthEntries();
   if (!list.length) return alert("这个月没有记录");
-  const rows = [["日期", "上班", "下班", "休息开始", "休息结束", "计薪小时", "工资(RM)", "备注"]];
+  const rows = [["日期", "上班", "下班", "休息开始", "休息结束", "计薪小时", "工资(RM)"]];
   let total = 0;
   list.forEach((e) => {
     const r = calc(e);
     total += r.pay;
-    rows.push([e.date, e.clockIn, e.clockOut, e.breakIn, e.breakOut, (r.work / 60).toFixed(2), r.pay.toFixed(2), e.note]);
+    rows.push([e.date, e.clockIn, e.clockOut, e.breakIn, e.breakOut, (r.work / 60).toFixed(2), r.pay.toFixed(2)]);
   });
-  rows.push(["合计", "", "", "", "", "", total.toFixed(2), ""]);
+  rows.push(["合计", "", "", "", "", "", total.toFixed(2)]);
   const csv = "\uFEFF" + rows.map((r) => r.map((c) => `"${String(c ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
   download(`wes-income-${$("monthPick").value}.csv`, csv, "text/csv");
 });
